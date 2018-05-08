@@ -1,10 +1,20 @@
 import logging
+import threading
 
 logger = logging.getLogger(__name__)
 
 
+class DataValidationError(Exception):
+    """ Used for an data validation errors when deserializing """
+    pass
+
+
 class Product:
-    def __init__(self, id=0, name='', price=0.0):
+    lock = threading.Lock()
+    stock = {}
+    index = -1
+
+    def __init__(self, id=-1, name='', price=0.0):
         self.id = int(id)
         self.name = name
         self.price = float(price)
@@ -16,6 +26,28 @@ class Product:
                   'price': self.price
                   }
         return result
+
+    def deserialize(self, data):
+        """ Deserializes a Product from a dictionary """
+        if not isinstance(data, dict):
+            raise DataValidationError('Invalid data: must be a dictionary')
+        try:
+            self.name = data['name']
+            self.price = data['price']
+        except KeyError as err:
+            raise DataValidationError('Invalid data: missing ' + err.args[0])
+
+    def add_to_stock(self):
+        # if id already exists, update
+        # if not, generate a new id
+        id = self.id
+        if id == -1 or id not in Product.stock:
+            id = Product.generate_next_id()
+            self.set_id(id)
+        Product.stock[id] = self
+
+    def delete_from_stock(self):
+        Product.stock.pop(self.id, None)
 
     def get_id(self):
         return self.id
@@ -39,44 +71,38 @@ class Product:
         # return a copy of product
         return Product(self.id, self.name, self.price)
 
+    # static methods
+    @staticmethod
+    def generate_next_id():
+        with Product.lock:
+            Product.index += 1
+        return Product.index
 
-class Stock:
-    products = {}
-
-    def __init__(self):
-        Stock.products[0] = Product(0, 'iPhone 8', 699.00)
-        Stock.products[1] = Product(1, 'iPhone X', 999.00)
-        Stock.products[2] = Product(2, 'Amazon Echo', 95.99)
-        Stock.products[3] = Product(3, 'Fire TV', 49.99)
-        Stock.products[4] = Product(4, 'Kindle', 59.99)
-        Stock.products[5] = Product(5, 'MacBook Pro, 15\"', 2799.00)
-        Stock.products[6] = Product(6, 'MacBook Pro, 13\"', 1799.00)
-        Stock.products[7] = Product(7, 'Sony MDR-XB650BT Headphones', 48.99)
-        Stock.products[8] = Product(8, 'Sony XB950N1 Noise Canceling Headphones', 148.99)
-        Stock.products[9] = Product(9, 'Hanke Travel Backpack', 29.99)
-        Stock.products[10] = Product(10, 'Kopack Anti Theft Backpack', 39.99)
-        Stock.products[11] = Product(11, 'iPad 9.7\"', 329)
-        Stock.products[12] = Product(12, 'iPad 12.9\"', 799)
+    @staticmethod
+    def initialize_stock():
+        with Product.lock:
+            Product.stock[0] = Product(0, 'iPhone 8', 699.00)
+            Product.stock[1] = Product(1, 'iPhone X', 999.00)
+            Product.stock[2] = Product(2, 'Amazon Echo', 95.99)
+            Product.stock[3] = Product(3, 'Fire TV', 49.99)
+            Product.stock[4] = Product(4, 'Kindle', 59.99)
+            Product.stock[5] = Product(5, 'MacBook Pro, 15\"', 2799.00)
+            Product.stock[6] = Product(6, 'MacBook Pro, 13\"', 1799.00)
+            Product.stock[7] = Product(7, 'Sony MDR-XB650BT Headphones', 48.99)
+            Product.stock[8] = Product(8, 'Sony XB950N1 Noise Canceling Headphones', 148.99)
+            Product.stock[9] = Product(9, 'Hanke Travel Backpack', 29.99)
+            Product.stock[10] = Product(10, 'Kopack Anti Theft Backpack', 39.99)
+            Product.stock[11] = Product(11, 'iPad 9.7\"', 329)
+            Product.stock[12] = Product(12, 'iPad 12.9\"', 799)
+            Product.index = 12
 
     @staticmethod
     def all():
         # Return a copy of products rather than return products itself
         results = {}
-        for id, product in Stock.products:
+        for id, product in Product.stock:
             results[id] = product.copy()
         return results
-
-    @staticmethod
-    def add_product(product):
-        id = product.id
-        if id in Stock.products:
-            id = len(Stock.products)
-            product.set_id(id)
-        Stock.products[id] = product
-
-    @staticmethod
-    def delete_product(id):
-        Stock.products.pop(id, None)
 
 
 # only have one real wishlist stored in memory!
