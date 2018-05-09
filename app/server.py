@@ -87,11 +87,36 @@ def add_product():
     return make_response(jsonify(msg), HTTP_201_CREATED)
 
 
-def check_content_type(content_type):
-    """ Checks that the media type is correct """
-    if request.headers['Content-Type'] == content_type:
-        return
-    app.logger.error('Invalid Content-Type: %s',
-                     request.headers['Content-Type'])
-    abort(status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-          'Content-Type must be {}'.format(content_type))
+######################################################################
+# GET THE
+######################################################################
+@app.route('/products', methods=['GET'])
+def list_products():
+    """
+    Retrieves list of products from the stock
+    This endpoint simply return all Products in stock.
+    """
+    results = Product.all()
+
+    return make_response(jsonify([product.serialize() for product in results]), HTTP_200_OK)
+
+
+######################################################################
+# CREATE A NEW WISHLIST
+######################################################################
+@app.route('/wishlists', methods=['POST'])
+def create_wishlists():
+    """ Creates a new wishlist and saves it
+    This endpoint will create a wishlist based the data in the body that is posted!
+    The data should contain an entry 'products', and the value should be a list of 'id's
+    """
+    data = {}
+    # Check for form submission data
+    if request.headers.get('Content-Type') == 'application/x-www-form-urlencoded':
+        app.logger.info('Processing FORM data')
+        data = request.form
+    else:
+        app.logger.info('Processing JSON data')
+        data = request.get_json()
+    Wishlist(data['products'])
+    return make_response(jsonify(data), HTTP_201_CREATED)

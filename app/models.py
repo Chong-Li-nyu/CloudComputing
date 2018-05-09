@@ -104,7 +104,24 @@ class Product:
             results[id] = product.copy()
         return results
 
+    @staticmethod
+    def delete_all():
+        with Product.lock:
+            Product.stock.clear()
+            Product.index = -1
+
 
 # only have one real wishlist stored in memory!
 class Wishlist:
-    instance = []
+    lock = threading.Lock()
+    lists = {}
+    index = -1
+
+    def __init__(self, id=-1, product_ids=None):
+        self.id = int(id)
+        if product_ids is None:
+            self.product_ids = []
+        else:
+            self.product_ids = product_ids
+
+
