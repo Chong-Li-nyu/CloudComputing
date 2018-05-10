@@ -5,22 +5,30 @@ export default class Item extends React.Component {
     this.state = {
       checked: false,
       contributeAmount: '',
-      remAmount: props.price
+      remAmount: props.price,
+      completed: false,
     };
     this.inputRef = React.createRef();
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);    
+
   }
-  validate(){
-    let contribAmount = this.state.contributeAmount=='' ? 0 : parseInt(this.state.contributeAmount)
+
+  validate(foo){
+    let contribAmount = this.state.contributeAmount=='' ? 0 : parseInt(this.state.contributeAmount, 10)
     if(this.state.contributeAmount > this.state.remAmount){
       contribAmount = this.state.remAmount;
     }
+    let newRemAmount = this.state.remAmount - contribAmount;
     this.setState({
       contributeAmount: '',
-      remAmount: this.state.remAmount - contribAmount
+      remAmount: newRemAmount
     });
+    if(contribAmount != 0 && newRemAmount == 0){
+      console.log("should call deleteItem")
+      foo(this.props.index);
+    }
     console.log(this.props.info + ": update remain amount as "+ (this.state.remAmount - contribAmount));
   }
 
@@ -37,17 +45,12 @@ export default class Item extends React.Component {
   render (){
     // let text = this.state.checked ? <strike>{this.props.message}</strike> : this.props.message;
     let text = this.props.info
+    let inputbox = <input type="text" ref={this.inputRef} name={this.props.info} value={this.state.contributeAmount} onChange={this.handleChange}/>
     return (
         <div className="row">
           <div className="col-md-12">
-            {/* <input type="checkbox" onClick={this.handleClick} />  */}
-            {/* <div className="col-md-3">{text}</div>
-            <div className="col-md-3">{this.state.remAmount}</div>
-            <div className="col-md-3">
-              <input type="text" ref={this.inputRef} name={this.props.info} value={this.state.contributeAmount} onChange={this.handleChange}/>
-            </div> */}
             &nbsp;{text}&nbsp;{this.state.remAmount}
-            &nbsp;<input type="text" ref={this.inputRef} name={this.props.info} value={this.state.contributeAmount} onChange={this.handleChange}/>
+            &nbsp;{this.state.remAmount == 0 ? null : inputbox}
           </div>
         </div>
     );
