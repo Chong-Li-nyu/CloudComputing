@@ -5,18 +5,32 @@ import CheckItem from './CheckItem.jsx';
 class CheckList extends React.Component{
   constructor(props){
     super(props);
+    
+    this.state = {
+      chosenIds: []
+    }
+    this.bufferChosenIds = [];
     this.submitInput = this.submitInput.bind(this);
-    this.chosenIds = [];
+    this.addChosenIdToList = this.addChosenIdToList.bind(this);
   }
 
   submitInput(event){
     this.childrenClone.forEach((el) => {
       var r = el.ref; //use the ref to access the child's methods
-      this.refs[r].validate(this.chosenIds);
+      this.refs[r].validate(this.addChosenIdToList);
+      this.setState({chosenIds: this.bufferChosenIds})
     });
-    console.log(this.chosenIds);
-    this.chosenIds = [];
     event.preventDefault();
+  }
+
+  addChosenIdToList(id){
+    // this.setState({chosenIds: this.state.chosenIds.push(id)});
+    this.bufferChosenIds.push(id);
+  }
+
+  componentDidUpdate(){
+    this.bufferChosenIds = [];
+    console.log(this.state.chosenIds);
   }
 
   render() {

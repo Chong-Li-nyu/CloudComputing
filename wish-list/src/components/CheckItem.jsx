@@ -10,9 +10,9 @@ export default class CheckItem extends React.Component {
     this.handleClick = this.handleClick.bind(this);    
   }
 
-  validate(chosenIds){
+  validate(addChosenIdToList){
     if(this.state.checked){
-      chosenIds.push(chosenIds);
+      addChosenIdToList(this.props.id);
     }
   }
 
