@@ -49,7 +49,7 @@ export default class Item extends React.Component {
     let text = this.props.info
     let inputbox = <input type="text" ref={this.inputRef} name={this.props.info} value={this.state.contributeAmount} onChange={this.handleChange}/>
     return (
-        <div>
+        <div className="itemBox">
           <Row className="row align-items-start">
             <Col md={4}>{text}</Col>
             <Col md={3}>${this.state.remAmount}</Col>

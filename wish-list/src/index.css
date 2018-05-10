@@ -21,7 +21,10 @@ body {
   padding: 10px;
 }
 .buttonBox{
-  margin: auto;
-  width: 30%;
-  padding: 10px;
+  padding-top : 35px ;
+
+} 
+
+.itemBox{
+  padding-bottom: 15px;
 }

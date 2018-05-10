@@ -22,11 +22,12 @@ export default class ItemListContainer extends React.Component {
     return (
       // 
       
-      
-        <Jumbotron>
-          <div className = "titleBox">
+      <div className="topContainer">
+        <div className = "titleBox">
         <h2>Wish List</h2>
         </div>
+        <Jumbotron>
+
         <Grid>
         
         <Form deleteItem = {this.deleteItem}>
@@ -40,6 +41,7 @@ export default class ItemListContainer extends React.Component {
         <hr />
         </Grid>
       </Jumbotron>
+      </div>
     );
   }
 }
