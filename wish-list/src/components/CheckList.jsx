@@ -2,7 +2,7 @@ import React from 'react';
 import {Jumbotron, Button, Grid, Row, Col} from 'react-bootstrap';
 import CheckItem from './CheckItem.jsx';
 
-class CheckList extends React.Component{
+export default class CheckList extends React.Component{
   constructor(props){
     super(props);
     this.submitInput = this.submitInput.bind(this);
@@ -31,7 +31,7 @@ class CheckList extends React.Component{
       <form onSubmit={this.submitInput}>
        {this.childrenClone}
           <div className="buttonBox">
-          <Button type="submit" bsStyle='success'>Submit</Button>
+            <Button type="submit" bsStyle='success'>Submit</Button>
           </div>
       </form>
       </Grid>
