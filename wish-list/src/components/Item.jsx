@@ -1,4 +1,6 @@
 import React from 'react';
+import {Grid, Row, Col} from 'react-bootstrap';
+
 export default class Item extends React.Component {
   constructor (props){
     super(props);
@@ -47,11 +49,12 @@ export default class Item extends React.Component {
     let text = this.props.info
     let inputbox = <input type="text" ref={this.inputRef} name={this.props.info} value={this.state.contributeAmount} onChange={this.handleChange}/>
     return (
-        <div className="row">
-          <div className="col-md-12">
-            &nbsp;{text}&nbsp;{this.state.remAmount}
-            &nbsp;{this.state.remAmount == 0 ? null : inputbox}
-          </div>
+        <div>
+          <Row className="row align-items-start">
+            <Col md={4}>{text}</Col>
+            <Col md={3}>${this.state.remAmount}</Col>
+            <Col md={3}>{this.state.remAmount == 0 ? null : inputbox}</Col>
+          </Row>
         </div>
     );
   }

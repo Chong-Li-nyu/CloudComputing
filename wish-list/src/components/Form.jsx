@@ -1,4 +1,5 @@
 import React from 'react';
+import {Button, Grid, Row, Col} from 'react-bootstrap';
 
 class Form extends React.Component{
   constructor(props){
@@ -20,12 +21,20 @@ class Form extends React.Component{
      })
     )
     
-    return <div>
+    return (
+    <div>
       <form className="form-horizontal"  onSubmit={this.submitInput}>
+
        {this.childrenClone}
-       <button type="submit">Buy</button>
+
+          <div className="buttonBox">
+          <Button type="submit" bsStyle='success'>Buy</Button>
+          </div>
+
+
        </form>
     </div>
+    );
   }
 }
 
