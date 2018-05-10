@@ -1,4 +1,4 @@
-import {firebase} from 'firebase'
+import * as firebase from 'firebase'
 
 const config = {
   apiKey: "AIzaSyAHr76kmE5AHYk1Bj5U_EBV30ORpwuO_5I",
@@ -8,6 +8,6 @@ const config = {
   storageBucket: "giftregistry-de42f.appspot.com",
   messagingSenderId: "243539118972"
 };
-export const firebaseApp = firebase.initializeApp(config);
+export const app = firebase.initializeApp(config);
 
-export const db = firebaseApp.database();
+export const db = app.database();

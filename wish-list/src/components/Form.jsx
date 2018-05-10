@@ -2,14 +2,14 @@ import React from 'react';
 
 class Form extends React.Component{
   constructor(props){
-    super(props)
+    super(props);
     this.submitInput = this.submitInput.bind(this);
   }
   submitInput(event){
     this.childrenClone.forEach((el) => {
-      var r = el.ref //use the ref to access the child's methods
+      var r = el.ref; //use the ref to access the child's methods
       this.refs[r].validate(this.props.deleteItem);
-    })
+    });
     event.preventDefault();
   }
   
@@ -18,7 +18,7 @@ class Form extends React.Component{
      (child) => React.cloneElement(child, {
        ref: Math.random().toString(36).slice(-5) //add a random string as a ref
      })
-    )
+    );
     
     return <div>
       <form className="form-horizontal"  onSubmit={this.submitInput}>
