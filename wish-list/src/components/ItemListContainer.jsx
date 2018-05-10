@@ -18,7 +18,7 @@ export default class ItemListContainer extends React.Component {
 
   render (){
     let msg = this.state.remainCount == 0? "Emmm, you guys bought all the gifts.": 
-      "There is " +  this.state.remainCount + " items on your list.";
+      "There is " +  this.state.remainCount + " items on the list.";
     return (
       // 
       

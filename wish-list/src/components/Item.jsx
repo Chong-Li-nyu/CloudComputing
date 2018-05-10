@@ -14,10 +14,9 @@ export default class Item extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);    
-
   }
 
-  validate(foo){
+  validate(deleteItem){
     let contribAmount = this.state.contributeAmount === '' ? 0 : parseInt(this.state.contributeAmount, 10);
     if(this.state.contributeAmount > this.state.remAmount){
       contribAmount = this.state.remAmount;
@@ -29,9 +28,10 @@ export default class Item extends React.Component {
     });
     if(contribAmount !== 0 && newRemAmount === 0){
       console.log("should call deleteItem");
-      foo(this.props.index);
+      deleteItem(this.props.index);
     }
     console.log(this.props.info + ": update remain amount as "+ (this.state.remAmount - contribAmount));
+    return contribAmount;
   }
 
   handleClick (e){
