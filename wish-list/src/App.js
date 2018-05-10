@@ -3,6 +3,7 @@ import { db } from 'FireBaseService'
 import ItemListContainer from './components/ItemListContainer.jsx';
 import Item from './components/Item.jsx';
 import Header from './components/Header';
+import {Button} from 'react-bootstrap';
 
 var items = [ <Item info="item1" price="100" index="0"/>,
 <Item info="item2" price="200" index="1"/>];

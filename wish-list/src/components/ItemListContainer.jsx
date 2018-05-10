@@ -1,7 +1,8 @@
 import React from 'react';
 import Form from './Form.jsx';
 import Item from './Item.jsx';
-
+import {Grid, Row, Col} from 'react-bootstrap';
+import { Button, Jumbotron } from 'react-bootstrap';
 export default class ItemListContainer extends React.Component {
   constructor (props){
     super (props);
@@ -17,31 +18,32 @@ export default class ItemListContainer extends React.Component {
 
   render (){
     let msg = this.state.remainCount == 0? "Emmm, you guys bought all the gifts.": 
-      "There is " +  this.state.remainCount + " items on your list.";
+      "There is " +  this.state.remainCount + " items on the list.";
     return (
-      <div>
-        <AppJumbotron title="Wish List" />
+      // 
+      
+      <div className="topContainer">
+        <div className = "titleBox">
+        <h2>Wish List</h2>
+        </div>
+        <Jumbotron>
+
+        <Grid>
+        
         <Form deleteItem = {this.deleteItem}>
           {this.state.items}
         </Form>
+
         <br />
         <br />
         <br />
         <h4>{msg}</h4>
         <hr />
+        </Grid>
+      </Jumbotron>
       </div>
     );
   }
 }
 
 
-
-class AppJumbotron extends React.Component {
-  render (){
-    return (
-      <div className="jumbotron">
-        <h2>{this.props.title}</h2>
-      </div>
-    );
-  }
-}
