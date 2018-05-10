@@ -3,6 +3,7 @@ import Form from './Form.jsx';
 import Item from './Item.jsx';
 import {Grid, Row, Col} from 'react-bootstrap';
 import { Button, Jumbotron } from 'react-bootstrap';
+
 export default class ItemListContainer extends React.Component {
   constructor (props){
     super (props);
@@ -17,7 +18,7 @@ export default class ItemListContainer extends React.Component {
   }
 
   render (){
-    let msg = this.state.remainCount == 0? "Emmm, you guys bought all the gifts.": 
+    let msg = this.state.remainCount === 0? "Emmm, you guys bought all the gifts.":
       "There is " +  this.state.remainCount + " items on the list.";
     return (
       // 
