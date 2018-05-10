@@ -97,6 +97,9 @@ class Product:
             Product.index = 12
 
     @staticmethod
+    def get_product_byid():
+
+    @staticmethod
     def all():
         # Return a copy of products rather than return products itself
         results = {}
@@ -123,5 +126,10 @@ class Wishlist:
             self.product_ids = []
         else:
             self.product_ids = product_ids
+        create_wishlist()
+
+    def create_wishlist(self):
+        for id in self.product_ids:
+            product_copy =
 
 
