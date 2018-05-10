@@ -8,7 +8,7 @@ export default class CheckList extends React.Component{
     
     this.state = {
       chosenIds: []
-    }
+    };
     this.bufferChosenIds = [];
     this.submitInput = this.submitInput.bind(this);
     this.addChosenIdToList = this.addChosenIdToList.bind(this);
@@ -16,7 +16,7 @@ export default class CheckList extends React.Component{
 
   submitInput(event){
     this.childrenClone.forEach((el) => {
-      var r = el.ref; //use the ref to access the child's methods
+      const r = el.ref; //use the ref to access the child's methods
       this.refs[r].validate(this.addChosenIdToList);
       this.setState({chosenIds: this.bufferChosenIds})
     });
@@ -28,6 +28,7 @@ export default class CheckList extends React.Component{
     this.bufferChosenIds.push(id);
   }
 
+  // when input changes
   componentDidUpdate(){
     this.bufferChosenIds = [];
     console.log(this.state.chosenIds);
