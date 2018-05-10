@@ -2,6 +2,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+  background: url("assets/home.jpg");
 }
 
 #root {
@@ -34,3 +35,8 @@ body {
   font-size: 1.5em;
   padding-bottom: 10px;
 }
+
+/*
+.home{
+  background: url("assets/home.jpg");
+}*/

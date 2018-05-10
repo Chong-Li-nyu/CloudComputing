@@ -53,7 +53,7 @@ export default class Item extends React.Component {
           <Row className="row align-items-start">
             <Col md={4}>{text}</Col>
             <Col md={3}>${this.state.remAmount}</Col>
-            <Col md={3}>{this.state.remAmount == 0 ? null : inputbox}</Col>
+            <Col md={3}>{this.state.remAmount === 0 ? null : inputbox}</Col>
           </Row>
         </div>
     );

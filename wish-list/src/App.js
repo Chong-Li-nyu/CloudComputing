@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { db } from 'FireBaseService'
+import { db } from './FireBaseService'
 import ItemListContainer from './components/ItemListContainer.jsx';
 import Item from './components/Item.jsx';
 import Header from './components/Header';
 import {Button} from 'react-bootstrap';
+import Main from './components/Main';
 
 var items = [ <Item info="item1" price="100" index="0"/>,
 <Item info="item2" price="200" index="1"/>];
@@ -16,8 +17,9 @@ var prices = [100, 200];
 class App extends Component {
   componentDidMount(){
     //  push sample products to database.
-    const productsRef = db.once('value', (products) => {
-      if (products.length <= 1) {
+    const productsRef = db.ref('products');
+    productsRef.once('value').then( (snapshot) => {
+      if (snapshot.val().length <= 1) {
         App.loadSampleProducts();
       }
     });
