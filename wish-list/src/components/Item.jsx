@@ -18,7 +18,7 @@ export default class Item extends React.Component {
   }
 
   validate(foo){
-    let contribAmount = this.state.contributeAmount=='' ? 0 : parseInt(this.state.contributeAmount, 10)
+    let contribAmount = this.state.contributeAmount === '' ? 0 : parseInt(this.state.contributeAmount, 10);
     if(this.state.contributeAmount > this.state.remAmount){
       contribAmount = this.state.remAmount;
     }
@@ -27,8 +27,8 @@ export default class Item extends React.Component {
       contributeAmount: '',
       remAmount: newRemAmount
     });
-    if(contribAmount != 0 && newRemAmount == 0){
-      console.log("should call deleteItem")
+    if(contribAmount !== 0 && newRemAmount === 0){
+      console.log("should call deleteItem");
       foo(this.props.index);
     }
     console.log(this.props.info + ": update remain amount as "+ (this.state.remAmount - contribAmount));
@@ -46,8 +46,8 @@ export default class Item extends React.Component {
   }
   render (){
     // let text = this.state.checked ? <strike>{this.props.message}</strike> : this.props.message;
-    let text = this.props.info
-    let inputbox = <input type="text" ref={this.inputRef} name={this.props.info} value={this.state.contributeAmount} onChange={this.handleChange}/>
+    let text = this.props.info;
+    let inputbox = <input type="text" ref={this.inputRef} name={this.props.info} value={this.state.contributeAmount} onChange={this.handleChange}/>;
     return (
         <div className="itemBox">
           <Row className="row align-items-start">
