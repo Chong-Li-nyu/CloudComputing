@@ -28,6 +28,11 @@ class Form extends React.Component{
     let msg = this.state.totalContribAmount === 0 ? null : <h4>Thanks, you have committed ${this.state.totalContribAmount} for gifts</h4>
     return (
     <div>
+        <Row className="headerRow">
+        <Col md={4}>Gift info</Col>
+        <Col md={3}>Remaining</Col>
+        <Col md={3}>Contribute</Col>
+        </Row>
       <form className="form-horizontal"  onSubmit={this.submitInput}>
 
        {this.childrenClone}
