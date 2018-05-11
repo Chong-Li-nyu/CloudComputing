@@ -2,13 +2,13 @@ import React from 'react';
 import {Jumbotron, Button, Grid, Row, Col} from 'react-bootstrap';
 import CheckItem from './CheckItem.jsx';
 
-class CheckList extends React.Component{
+export default class CheckList extends React.Component{
   constructor(props){
     super(props);
     
     this.state = {
       chosenIds: []
-    }
+    };
     this.bufferChosenIds = [];
     this.submitInput = this.submitInput.bind(this);
     this.addChosenIdToList = this.addChosenIdToList.bind(this);
@@ -16,7 +16,7 @@ class CheckList extends React.Component{
 
   submitInput(event){
     this.childrenClone.forEach((el) => {
-      var r = el.ref; //use the ref to access the child's methods
+      const r = el.ref; //use the ref to access the child's methods
       this.refs[r].validate(this.addChosenIdToList);
       this.setState({chosenIds: this.bufferChosenIds})
     });
@@ -28,6 +28,7 @@ class CheckList extends React.Component{
     this.bufferChosenIds.push(id);
   }
 
+  // when input changes
   componentDidUpdate(){
     this.bufferChosenIds = [];
     console.log(this.state.chosenIds);
@@ -45,7 +46,7 @@ class CheckList extends React.Component{
       <form onSubmit={this.submitInput}>
        {this.childrenClone}
           <div className="buttonBox">
-          <Button type="submit" bsStyle='success'>Submit</Button>
+            <Button type="submit" bsStyle='success'>Submit</Button>
           </div>
       </form>
       </Grid>
