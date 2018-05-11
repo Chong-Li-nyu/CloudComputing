@@ -1,11 +1,11 @@
 import React from 'react'
 import { Switch, Route, Link } from 'react-router-dom'
 import ItemListContainer from './ItemListContainer';
-import CheckList from './CheckList';
+import CheckListContainer from './CheckListContainer';
 
 const Home = () => (
   <div className={"home"}>
-    <button>{<Link to='/items'>Create a Wishlist!</Link>}</button>
+    <button>{<Link to='/products'>Create a Wishlist!</Link>}</button>
   </div>
 );
 

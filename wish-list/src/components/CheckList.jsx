@@ -7,7 +7,9 @@ export default class CheckList extends React.Component{
     super(props);
     
     this.state = {
-      chosenIds: []
+      chosenIds: [],
+      children: [],
+      childrenClone: []
     };
     this.bufferChosenIds = [];
     this.submitInput = this.submitInput.bind(this);
@@ -15,7 +17,7 @@ export default class CheckList extends React.Component{
   }
 
   submitInput(event){
-    this.childrenClone.forEach((el) => {
+    this.state.childrenClone.forEach((el) => {
       const r = el.ref; //use the ref to access the child's methods
       this.refs[r].validate(this.addChosenIdToList);
       this.setState({chosenIds: this.bufferChosenIds})
@@ -32,19 +34,24 @@ export default class CheckList extends React.Component{
   componentDidUpdate(){
     this.bufferChosenIds = [];
     console.log(this.state.chosenIds);
+    // this.state.children = React.Children.toArray(this.props.children);
+    // for (const child of this.state.children) {
+    //   this.state.childrenClone = React.cloneElement(child, {ref: Math.random().toString(36).slice(-5)});
+    // }
   }
 
   render() {
-    this.childrenClone = React.Children.map(this.props.children,
-     (child) => React.cloneElement(child, {
-       ref: Math.random().toString(36).slice(-5) //add a random string as a ref
-     })
-    );
+    console.log('children?: ',this.props.children);
+    this.state.children = React.Children.toArray(this.props.children);
+    for (const child of this.state.children) {
+      this.state.childrenClone = React.cloneElement(child, {ref: Math.random().toString(36).slice(-5)});
+    }
     return (
     <Jumbotron>
       <Grid>
       <form onSubmit={this.submitInput}>
-       {this.childrenClone}
+        {console.log('children clone?: ',this.childrenClone)}
+        {this.state.childrenClone}
           <div className="buttonBox">
             <Button type="submit" bsStyle='success'>Submit</Button>
           </div>
@@ -54,5 +61,3 @@ export default class CheckList extends React.Component{
     );
   }
 }
-
-export default CheckList;
