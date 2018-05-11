@@ -7,6 +7,7 @@ export default class CheckList extends React.Component{
     super(props);
     
     this.state = {
+      items: [],
       chosenIds: []
     };
     this.bufferChosenIds = [];
@@ -14,12 +15,24 @@ export default class CheckList extends React.Component{
     this.addChosenIdToList = this.addChosenIdToList.bind(this);
   }
 
+  componentDidMount() {
+    let itemsBuffer = [];
+    for (const item of this.props.checkItems) {
+      itemsBuffer.push(<CheckItem id={item["id"]} name={item["name"]} price={item["price"]}/>);
+    }
+    this.setState({items: itemsBuffer});
+  }
+
   submitInput(event){
-    this.childrenClone.forEach((el) => {
-      const r = el.ref; //use the ref to access the child's methods
-      this.refs[r].validate(this.addChosenIdToList);
-      this.setState({chosenIds: this.bufferChosenIds})
-    });
+    // this.childrenClone.forEach((el) => {
+    //   const r = el.ref; //use the ref to access the child's methods
+    //   this.refs[r].validate(this.addChosenIdToList);
+    //   this.setState({chosenIds: this.bufferChosenIds})
+    // });
+    for (const item in this.state.items) {
+      item.validate(this.addChosenIdToList);
+      this.setState({chosenIds: this.bufferChosenIds});
+    }
     event.preventDefault();
   }
 
@@ -28,23 +41,29 @@ export default class CheckList extends React.Component{
     this.bufferChosenIds.push(id);
   }
 
-  // when input changes
   componentDidUpdate(){
+    if (this.) 
+    let itemsBuffer = [];
+    for (const item of this.props.checkItems) {
+      itemsBuffer.push(<CheckItem id={item["id"]} name={item["name"]} price={item["price"]}/>);
+    }
+    this.setState({items: itemsBuffer});
     this.bufferChosenIds = [];
     console.log(this.state.chosenIds);
   }
 
   render() {
-    this.childrenClone = React.Children.map(this.props.children,
-     (child) => React.cloneElement(child, {
-       ref: Math.random().toString(36).slice(-5) //add a random string as a ref
-     })
-    );
+    // this.childrenClone = React.Children.map(this.props.children,
+    //  (child) => React.cloneElement(child, {
+    //    ref: Math.random().toString(36).slice(-5) //add a random string as a ref
+    //  })
+    // );
+    console.log('items: ', this.state.items);
     return (
     <Jumbotron>
       <Grid>
       <form onSubmit={this.submitInput}>
-       {this.childrenClone}
+        {this.state.items}
           <div className="buttonBox">
             <Button type="submit" bsStyle='success'>Submit</Button>
           </div>
@@ -54,5 +73,3 @@ export default class CheckList extends React.Component{
     );
   }
 }
-
-export default CheckList;

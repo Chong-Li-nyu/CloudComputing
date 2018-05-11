@@ -24,7 +24,7 @@ export default class CheckItem extends React.Component {
 
   render (){
     // let text = this.state.checked ? <strike>{this.props.message}</strike> : this.props.message;
-    let text = this.props.info;
+    let text = this.props.name;
     let item = (
       <label><input type="checkbox" onClick={this.handleClick} />&nbsp;{text}</label>
     );
