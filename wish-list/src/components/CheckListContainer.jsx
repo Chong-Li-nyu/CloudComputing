@@ -12,7 +12,7 @@ export default class CheckListContainer extends React.Component{
       checkItems: []
     };
   }
-  componentDidMount() {
+  componentWillMount() {
     const productsRef = db.ref('products');
     productsRef.once('value').then( (snapshot) => {
       let items = [];
