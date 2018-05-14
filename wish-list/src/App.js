@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { db } from './FireBaseService'
-import ItemListContainer from './components/ItemListContainer.jsx';
-import Item from './components/Item.jsx';
+import WishList from './components/WishList.jsx';
+import WishListItem from './components/WishListItem.jsx';
 import Header from './components/Header';
 import {Button} from 'react-bootstrap';
 import Main from './components/Main';
 
-var items = [ <Item info="item1" price="100" index="0"/>,
-<Item info="item2" price="200" index="1"/>];
+var items = [ <WishListItem info="item1" price="100" index="0"/>,
+<WishListItem info="item2" price="200" index="1"/>];
 
 var infos = ["item1", "item2"];
 var prices = [100, 200];

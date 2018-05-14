@@ -1,7 +1,7 @@
 import React from 'react';
 import {Grid, Row, Col} from 'react-bootstrap';
 
-export default class Item extends React.Component {
+export default class WishListItem extends React.Component {
   constructor (props){
     super(props);
     this.state = {

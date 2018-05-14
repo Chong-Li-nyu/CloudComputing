@@ -1,6 +1,7 @@
 import React from 'react';
 import {Jumbotron, Button, Grid, Row, Col} from 'react-bootstrap';
 import CheckItem from './CheckItem.jsx';
+import { db } from '../FireBaseService'
 
 export default class CheckList extends React.Component{
   constructor(props) {
@@ -8,7 +9,8 @@ export default class CheckList extends React.Component{
     
     this.state = {
       items: [],
-      chosenIds: []
+      chosenIds: [],
+      wishListId: null
     };
     this.bufferChosenIds = [];
   }
@@ -38,7 +40,26 @@ export default class CheckList extends React.Component{
 
   submitInput(event) {
     this.setState({chosenIds: this.bufferChosenIds}, () => {
-      console.log('chosen ids: ', this.state.chosenIds);
+      // write the data to database
+      let wishlist = {};
+      let len = 0;
+      for (let productId of this.state.chosenIds) {
+        db.ref('products/' + productId).once('value', (snapshot) => {
+          const product = snapshot.val();
+          wishlist[productId] = {
+            name: product.name,
+            priceToGo: product.price
+          };
+          len++;
+          if (len === this.state.chosenIds.length) {
+            // push to database
+            const id = db.ref('wishlist').push().key;
+            console.log('wishlistId: ', id);
+            this.setState({wishListId: id});
+            db.ref('wishlists/' + id).set(wishlist);
+          }
+        });
+      }
     });
     event.preventDefault();
   }
@@ -48,17 +69,21 @@ export default class CheckList extends React.Component{
   }
 
   render() {
-    return (
-    <Jumbotron>
-      <Grid>
-      <form onSubmit={this.submitInput.bind(this)}>
-        {this.state.items}
-          <div className="buttonBox">
-            <Button type="submit" bsStyle='success'>Submit</Button>
-          </div>
-      </form>
-      </Grid>
-    </Jumbotron>
-    );
+    if (this.state.wishListId) {
+      return (<div><label>Share this wishlist id: <b>{this.state.wishListId}</b> to your friends!</label></div>);
+    } else {
+      return (
+        <Jumbotron>
+          <Grid>
+            <form onSubmit={this.submitInput.bind(this)}>
+              {this.state.items}
+              <div className="buttonBox">
+                <Button type="submit" bsStyle='success'>Submit</Button>
+              </div>
+            </form>
+          </Grid>
+        </Jumbotron>
+      );
+    }
   }
 }

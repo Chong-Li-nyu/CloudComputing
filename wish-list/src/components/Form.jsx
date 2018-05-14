@@ -12,10 +12,10 @@ class Form extends React.Component{
   submitInput(event){
     let newTotalContribAmount = 0;
     this.childrenClone.forEach((el) => {
-      var r = el.ref; //use the ref to access the child's methods
+      let r = el.ref; //use the ref to access the child's methods
       newTotalContribAmount += this.refs[r].validate(this.props.deleteItem);
     });
-    this.setState({totalContribAmount: newTotalContribAmount})
+    this.setState({totalContribAmount: newTotalContribAmount});
     event.preventDefault();
   }
   
