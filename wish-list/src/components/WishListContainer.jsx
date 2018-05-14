@@ -6,8 +6,10 @@ export default class WishListContainer extends React.Component {
   constructor(props) {
     super(props);
     this.items = {};
+    this.ids = [];
     this.state = {
-      listItems: []
+      listItems: {},
+      listIds: []
     };
   }
 
@@ -26,8 +28,10 @@ export default class WishListContainer extends React.Component {
       snapshot.forEach( (childSnapshot) => {
         const productId = childSnapshot.key;
         const data = childSnapshot.val();
+        this.ids.push(productId);
         this.items[productId] = {id: productId, name: data.name, priceToGo: data.priceToGo};
       });
+      this.setState({listIds: this.ids});
       this.setState({listItems: this.items});
     });
   }
@@ -45,7 +49,7 @@ export default class WishListContainer extends React.Component {
 
   render() {
     return (
-      <WishList items={this.state.listItems}>
+      <WishList ids={this.state.listIds} items={this.state.listItems}>
       </WishList>
     );
   }

@@ -18,13 +18,10 @@ export default class CheckList extends React.Component{
   addChosenIdToList(id) {
     // this.setState({chosenIds: this.state.chosenIds.push(id)});
     this.bufferChosenIds.push(id);
-    console.log('added: ', id);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('receiving props!!!');
     if (this.props.checkItems !== nextProps.checkItems) {
-      console.log('xian zai you le ba? ', nextProps.checkItems);
       this.updateItems(nextProps.checkItems);
     }
   }
@@ -54,7 +51,6 @@ export default class CheckList extends React.Component{
           if (len === this.state.chosenIds.length) {
             // push to database
             const id = db.ref('wishlist').push().key;
-            console.log('wishlistId: ', id);
             this.setState({wishListId: id});
             db.ref('wishlists/' + id).set(wishlist);
           }

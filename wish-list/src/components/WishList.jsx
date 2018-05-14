@@ -7,8 +7,21 @@ import { Button, Jumbotron } from 'react-bootstrap';
 export default class WishList extends React.Component {
   constructor(props) {
     super (props);
-    this.state = {items : props.items, remainCount: props.items.length};
+    this.ids = [];
+    this.state = {
+      items: [],
+      remainCount: Object.keys(props.items).length
+    };
     this.deleteItem = this.deleteItem.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.ids !== nextProps.ids) {
+      this.ids = nextProps.ids;
+    }
+    if (this.props.items !== nextProps.items) {
+      this.updateItems(nextProps.items);
+    }
   }
 
   deleteItem(index) {
