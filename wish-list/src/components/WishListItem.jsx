@@ -31,7 +31,7 @@ export default class WishListItem extends React.Component {
       console.log(this.props.name + ": update remain amount to "+ newRemAmount);
       // reset state
       this.setState({
-        contributeAmount: contribAmount,
+        contributeAmount: '',
         remAmount: newRemAmount
       });
       // push changes to db
@@ -42,7 +42,7 @@ export default class WishListItem extends React.Component {
 
   handleChange(event) {
     this.setState({
-      contributeAmount: parseInt(event.target.value),
+      contributeAmount: parseInt(event.target.value, 10),
     });
   }
 
