@@ -23,6 +23,7 @@ export default class WishListItem extends React.Component {
         contribAmount = this.state.remAmount;
       }
       newRemAmount -= contribAmount;
+      newRemAmount.toFixed(2);
       if (newRemAmount === 0) {
         console.log("should call subRemainCount");
         subRemainCount();
