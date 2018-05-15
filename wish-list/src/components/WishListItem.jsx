@@ -1,59 +1,64 @@
 import React from 'react';
-import {Grid, Row, Col} from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
+import { db } from '../FireBaseService'
 
 export default class WishListItem extends React.Component {
   constructor (props){
     super(props);
     this.state = {
-      checked: false,
-      contributeAmount: '',
-      remAmount: props.price,
-      completed: false,
+      contributeAmount: 0,
+      remAmount: this.props.priceToGo,
     };
-    this.inputRef = React.createRef();
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);    
   }
 
-  validate(deleteItem){
-    let contribAmount = this.state.contributeAmount === '' ? 0 : parseInt(this.state.contributeAmount, 10);
-    if(this.state.contributeAmount > this.state.remAmount){
-      contribAmount = this.state.remAmount;
+  componentWillReceiveProps(nextProps) {
+    if (this.props.priceToGo !== nextProps.priceToGo) {
+      console.log('price to go: ', nextProps.priceToGo);
+      this.setState({remainAmount: nextProps.priceToGo});
     }
-    let newRemAmount = this.state.remAmount - contribAmount;
-    this.setState({
-      contributeAmount: '',
-      remAmount: newRemAmount
-    });
-    if(contribAmount !== 0 && newRemAmount === 0){
-      console.log("should call deleteItem");
-      deleteItem(this.props.index);
+  }
+
+  validate(subRemainCount){
+    let contribAmount = this.state.contributeAmount;
+    let newRemAmount = this.state.remAmount;
+    if (contribAmount !== 0) {
+      if (this.state.contributeAmount > this.state.remAmount) {
+        contribAmount = this.state.remAmount;
+      }
+      newRemAmount -= contribAmount;
+      if (newRemAmount === 0) {
+        console.log("should call subRemainCount");
+        subRemainCount();
+      }
+      console.log(this.props.name + ": update remain amount to "+ newRemAmount);
+      // reset state
+      this.setState({
+        contributeAmount: 0,
+        remAmount: newRemAmount
+      });
+      // push changes to db
+      db.ref('wishlists').child(`${this.props.wishListId}`).child(`${this.props.id}`).set(
+        { priceToGo: newRemAmount }
+      );
     }
-    console.log(this.props.info + ": update remain amount as "+ (this.state.remAmount - contribAmount));
     return contribAmount;
   }
 
-  handleClick (e){
-    this.setState({
-      checked: !this.state.checked
-    });
-  }
   handleChange(event) {
     this.setState({
       contributeAmount: parseInt(event.target.value),
     });
   }
   render (){
-    // let text = this.state.checked ? <strike>{this.props.message}</strike> : this.props.message;
-    let text = this.props.info;
-    let inputbox = <input type="text" ref={this.inputRef} name={this.props.info} value={this.state.contributeAmount} onChange={this.handleChange}/>;
+    let name = this.props.name;
+    let inputBox = <input type="text" name={name} value={this.state.contributeAmount} onChange={this.handleChange.bind(this)}/>;
+
     return (
         <div className="itemBox">
           <Row className="row align-items-start">
-            <Col md={4}>{text}</Col>
-            <Col md={3}>${this.state.remAmount}</Col>
-            <Col md={3}>{this.state.remAmount === 0 ? null : inputbox}</Col>
+            <Col md={4}>{name}</Col>
+            <Col md={3}>{this.state.remAmount < 0 ? null : `$ ${this.state.remAmount}`}</Col>
+            <Col md={3}>{this.state.remAmount === 0 ? null : inputBox}</Col>
           </Row>
         </div>
     );

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Jumbotron, Button, Grid, Row, Col} from 'react-bootstrap';
+import { Jumbotron, Button, Grid, Row, Col } from 'react-bootstrap';
 import CheckItem from './CheckItem';
 import { db } from '../FireBaseService'
 import App from "../App";
@@ -32,7 +32,6 @@ export default class CheckListContainer extends React.Component{
   }
 
   render() {
-    console.log('checkitems: ', this.state.checkItems);
     return (
       <CheckList checkItems={this.state.checkItems}>
       </CheckList>

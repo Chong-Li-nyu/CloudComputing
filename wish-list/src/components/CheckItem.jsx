@@ -1,5 +1,5 @@
 import React from 'react';
-import {Grid, Row, Col} from 'react-bootstrap';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 export default class CheckItem extends React.Component {
   constructor (props) {
@@ -13,6 +13,9 @@ export default class CheckItem extends React.Component {
     if (!this.state.checked) {
       this.props.addChosenIdToList(this.props.id);
       console.log('checked: ', this.props.id);
+    } else {
+      this.props.deleteChosenIdFromList(this.props.id);
+      console.log('unchecked: ', this.props.id);
     }
     this.setState({
       checked: !this.state.checked

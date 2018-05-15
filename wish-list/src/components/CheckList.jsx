@@ -1,5 +1,5 @@
 import React from 'react';
-import {Jumbotron, Button, Grid, Row, Col} from 'react-bootstrap';
+import { Jumbotron, Button, Grid, Row, Col } from 'react-bootstrap';
 import CheckItem from './CheckItem.jsx';
 import { db } from '../FireBaseService'
 
@@ -13,11 +13,8 @@ export default class CheckList extends React.Component{
       wishListId: null
     };
     this.bufferChosenIds = [];
-  }
-
-  addChosenIdToList(id) {
-    // this.setState({chosenIds: this.state.chosenIds.push(id)});
-    this.bufferChosenIds.push(id);
+    this.bufferIdsIndex = 0;
+    this.bufferIdToIndexMap = {};
   }
 
   componentWillReceiveProps(nextProps) {
@@ -26,11 +23,24 @@ export default class CheckList extends React.Component{
     }
   }
 
+  addChosenIdToList(id) {
+    // this.setState({chosenIds: this.state.chosenIds.push(id)});
+    this.bufferChosenIds.push(id);
+    this.bufferIdToIndexMap[id] = this.bufferIdsIndex;
+    this.bufferIdsIndex++;
+  }
+
+  deleteChosenIdFromList(id) {
+    const index = this.bufferIdToIndexMap[id];
+    this.bufferChosenIds.splice(index, 1);
+    this.bufferIdsIndex--;
+  }
+
   updateItems(checkItems) {
     let itemsBuffer = [];
     for (let i = 0; i < checkItems.length; i++) {
       const item = checkItems[i];
-      itemsBuffer.push(<CheckItem key={i} id={item["id"]} name={item["name"]} price={item["price"]} addChosenIdToList={this.addChosenIdToList.bind(this)}/>);
+      itemsBuffer.push(<CheckItem key={i} id={item["id"]} name={item["name"]} price={item["price"]} addChosenIdToList={this.addChosenIdToList.bind(this)} deleteChosenIdFromList={this.deleteChosenIdFromList.bind(this)}/>);
     }
     this.setState({items: itemsBuffer});
   }
