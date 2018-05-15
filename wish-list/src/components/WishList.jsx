@@ -15,21 +15,22 @@ export default class WishList extends React.Component {
       remainCount: -1,
       totalContribAmount: 0
     };
+    this.submitInput = this.submitInput.bind(this);
+    this.subRemainCount = this.subRemainCount.bind(this);
   }
 
   componentDidMount() {
     // pull out what we want in props
     const { match: { params } } = this.props;
     this.wishListId = params.id;
-    console.log('wishlist id: ', this.wishListId);
     const productsInListRef = db.ref('wishlists/' + this.wishListId);
     this.initItems(productsInListRef);
     this.addItemsListener(productsInListRef);
-
   }
 
   initItems(productsInListRef) {
     productsInListRef.once('value', (snapshot) => {
+      let remCount = 0;
       let index = 0;
       snapshot.forEach( (childSnapshot) => {
         let productId = childSnapshot.key;
@@ -42,8 +43,11 @@ export default class WishList extends React.Component {
         // create element for item
         this.listItemsBuffer.push(<WishListItem key={productId} ref={itemRef} wishListId={this.wishListId} id={productId} name={data.name} priceToGo={data.priceToGo}/>);
         index++;
+        if (data.priceToGo !== 0) {
+          remCount++;
+        }
       });
-      this.setState({remainCount: snapshot.length});
+      this.setState({remainCount: remCount});
       this.setState({listItems: this.listItemsBuffer});
     });
   }
@@ -53,10 +57,8 @@ export default class WishList extends React.Component {
       if (snapshot.exists()) {
         let productId = snapshot.key;
         let data = snapshot.val();
-        let index = this.state.idToIndexMap[productId];
-        this.listItemsBuffer[index].current.setRemAmount(data.priceToGo);
-        // = <WishListItem key={productId} ref={this.itemRefs[index]} wishListId={this.wishListId} id={productId} name={data.name} priceToGo={data.priceToGo}/>;
-        this.setState({listItems: this.listItemsBuffer});
+        let index = this.idToIndexMap[productId];
+        this.itemRefs[index].current.setRemAmount(data.priceToGo);
       }
     });
   }
@@ -66,10 +68,10 @@ export default class WishList extends React.Component {
   }
 
   submitInput(event) {
-    let newTotalContribAmount = 0;
+    let newTotalContribAmount = this.state.totalContribAmount;
     for (let i = 0; i < this.itemRefs.length; i++) {
       let itemRef = this.itemRefs[i];
-      newTotalContribAmount += itemRef.current.validate(this.subRemainCount().bind(this));
+      newTotalContribAmount += itemRef.current.validate(this.subRemainCount);
     }
     this.setState({totalContribAmount: newTotalContribAmount});
     event.preventDefault();
@@ -77,9 +79,7 @@ export default class WishList extends React.Component {
 
   render() {
     let remCountMsg;
-    if (this.state.remainCount < 0) {
-      remCountMsg = null;
-    } else if (this.state.remainCount === 0) {
+    if (this.state.remainCount === 0) {
       remCountMsg = "Emmm, you guys bought all the gifts!";
     } else {
       remCountMsg = "There is " +  this.state.remainCount + " items on the list.";
@@ -99,7 +99,7 @@ export default class WishList extends React.Component {
                 <Col md={3}>Remaining</Col>
                 <Col md={3}>Contribute</Col>
               </Row>
-              <form className="form-horizontal"  onSubmit={this.submitInput.bind(this)}>
+              <form className="form-horizontal"  onSubmit={this.submitInput}>
                 {this.state.listItems}
                 <div className="buttonBox">
                   <Button type="submit" bsStyle='success'>Buy</Button>

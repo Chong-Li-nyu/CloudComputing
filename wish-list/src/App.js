@@ -1,18 +1,7 @@
 import React, { Component } from 'react';
 import { db } from './FireBaseService'
-import WishList from './components/WishList.jsx';
-import WishListItem from './components/WishListItem.jsx';
 import Header from './components/Header';
-import {Button} from 'react-bootstrap';
 import Main from './components/Main';
-
-var items = [ <WishListItem info="item1" price="100" index="0"/>,
-<WishListItem info="item2" price="200" index="1"/>];
-
-var infos = ["item1", "item2"];
-var prices = [100, 200];
-
-
 
 class App extends Component {
   componentDidMount(){

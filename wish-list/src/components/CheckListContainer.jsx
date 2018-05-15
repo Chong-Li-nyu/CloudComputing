@@ -1,8 +1,5 @@
 import React from 'react';
-import { Jumbotron, Button, Grid, Row, Col } from 'react-bootstrap';
-import CheckItem from './CheckItem';
 import { db } from '../FireBaseService'
-import App from "../App";
 import CheckList from "./CheckList";
 
 export default class CheckListContainer extends React.Component{

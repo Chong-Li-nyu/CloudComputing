@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { db } from '../FireBaseService'
 
 export default class WishListItem extends React.Component {
@@ -11,11 +11,8 @@ export default class WishListItem extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.priceToGo !== nextProps.priceToGo) {
-      console.log('price to go: ', nextProps.priceToGo);
-      this.setState({remainAmount: nextProps.priceToGo});
-    }
+  setRemAmount(newRemAmount) {
+    this.setState({remAmount: newRemAmount});
   }
 
   validate(subRemainCount){
@@ -33,13 +30,11 @@ export default class WishListItem extends React.Component {
       console.log(this.props.name + ": update remain amount to "+ newRemAmount);
       // reset state
       this.setState({
-        contributeAmount: 0,
+        contributeAmount: contribAmount,
         remAmount: newRemAmount
       });
       // push changes to db
-      db.ref('wishlists').child(`${this.props.wishListId}`).child(`${this.props.id}`).set(
-        { priceToGo: newRemAmount }
-      );
+      db.ref(`wishlists/${this.props.wishListId}/${this.props.id}/priceToGo`).set(newRemAmount);
     }
     return contribAmount;
   }
@@ -49,6 +44,7 @@ export default class WishListItem extends React.Component {
       contributeAmount: parseInt(event.target.value),
     });
   }
+
   render (){
     let name = this.props.name;
     let inputBox = <input type="text" name={name} value={this.state.contributeAmount} onChange={this.handleChange.bind(this)}/>;

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Grid, Row, Col } from 'react-bootstrap';
 
 export default class CheckItem extends React.Component {
   constructor (props) {

@@ -12,3 +12,5 @@ const config = {
 export const app = firebase.initializeApp(config);
 
 export const db = app.database();
+
+export const paths = {};

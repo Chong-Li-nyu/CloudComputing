@@ -1,7 +1,7 @@
 import React from 'react';
-import { Jumbotron, Button, Grid, Row, Col } from 'react-bootstrap';
+import { Jumbotron, Button, Grid } from 'react-bootstrap';
 import CheckItem from './CheckItem.jsx';
-import { db } from '../FireBaseService'
+import { db, paths } from '../FireBaseService'
 
 export default class CheckList extends React.Component{
   constructor(props) {
@@ -76,7 +76,11 @@ export default class CheckList extends React.Component{
 
   render() {
     if (this.state.wishListId) {
-      return (<div><label>Share this wishlist id: <b>{this.state.wishListId}</b> to your friends!</label></div>);
+      const link = `${paths['home']}wishlists/${this.state.wishListId}`;
+      return (
+        <div>
+          <label>Share this link: <a href={link}>{link}</a> to your friends!</label>
+        </div>);
     } else {
       return (
         <Jumbotron>
